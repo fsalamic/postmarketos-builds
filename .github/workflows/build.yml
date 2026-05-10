@@ -26,7 +26,7 @@ jobs:
 
       - name: Install pmbootstrap from git
         run: |
-          git clone --branch 3.10.2 --depth=1 https://gitlab.postmarketos.org/postmarketOS/pmbootstrap.git
+          git clone --depth=1 https://gitlab.postmarketos.org/postmarketOS/pmbootstrap.git
           mkdir -p ~/.local/bin
           ln -s "$PWD/pmbootstrap/pmbootstrap.py" ~/.local/bin/pmbootstrap
           pmbootstrap --version
@@ -37,6 +37,9 @@ jobs:
           cd ~/.local/var/pmbootstrap/cache_git/pmaports
           git remote
           git remote add pipa https://github.com/pipa-project/pmaports-pipa.git
+          DEFAULT_BRANCH=$(git remote show pipa | awk '/HEAD branch/ {print $NF}')
+          git fetch pipa $DEFAULT_BRANCH
+          git reset --hard pipa/$DEFAULT_BRANCH
 
       - name: Build the xiaomi-pipa without DE
         run: |
@@ -53,7 +56,6 @@ jobs:
            path: out/*.img*
            retention-days: 7
 
-
       - name: Build the xiaomi-pipa with KDE Plasma Desktop
         run: |
            yes | pmbootstrap zap
@@ -63,7 +65,6 @@ jobs:
            pmbootstrap export
            cp /tmp/postmarketOS-export/boot.img out/boot-xiaomi-pipa.img
            cp /tmp/postmarketOS-export/xiaomi-pipa.img out/rootfs-xiaomi-pipa-plasma.img
-
       
       - name: Upload artifacts xiaomi-pipa with KDE Plasma Desktop
         uses: actions/upload-artifact@v4
@@ -71,7 +72,6 @@ jobs:
            name: xiaomi-pipa-plasma
            path: out/*.img*
            retention-days: 7
-            
            
       - name: Copy xiaomi-pipa kernel
         run: |
@@ -85,8 +85,3 @@ jobs:
            path: out/*.apk
            retention-days: 7
 
-
-
-        
-
-        
