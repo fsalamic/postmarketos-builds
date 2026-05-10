@@ -41,6 +41,22 @@ jobs:
           git fetch pipa $DEFAULT_BRANCH
           git reset --hard pipa/$DEFAULT_BRANCH
 
+      - name: Build the xiaomi-pipa without DE
+        run: |
+           cp xiaomi-pipa.cfg ~/.config/pmbootstrap_v3.cfg
+           pmbootstrap install --password 147147
+           pmbootstrap export
+           cp /tmp/postmarketOS-export/boot.img out/boot-xiaomi-pipa.img
+           cp /tmp/postmarketOS-export/xiaomi-pipa.img out/rootfs-xiaomi-pipa-none.img
+      
+      - name: Upload artifacts xiaomi-pipa without DE
+        uses: actions/upload-artifact@v4
+        with:
+           name: xiaomi-pipa-none
+           path: out/*.img*
+           retention-days: 7
+
+
       - name: Build the xiaomi-pipa with KDE Plasma Desktop
         run: |
            yes | pmbootstrap zap
@@ -51,12 +67,6 @@ jobs:
            cp /tmp/postmarketOS-export/boot.img out/boot-xiaomi-pipa.img
            cp /tmp/postmarketOS-export/xiaomi-pipa.img out/rootfs-xiaomi-pipa-plasma.img
 
-      - name: Breakpoint if tests failed for xiaomi-pipa with KDE Plasma Desktop
-        if: failure()
-        uses: namespacelabs/breakpoint-action@v0
-        with:
-          duration: 30m
-          authorized-users: nixxizlab
       
       - name: Upload artifacts xiaomi-pipa with KDE Plasma Desktop
         uses: actions/upload-artifact@v4
