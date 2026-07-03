@@ -24,6 +24,11 @@ jobs:
         run: |
            find . -type f -name "*.cfg" -exec sed -i "s|HOME|$(echo $HOME)|;s|NPROC|$(nproc)|" {} +
 
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y kpartx qemu-user-static binfmt-support
+
       - name: Install pmbootstrap from git
         run: |
           git clone --branch 3.10.3 --depth=1 https://gitlab.postmarketos.org/postmarketOS/pmbootstrap.git
