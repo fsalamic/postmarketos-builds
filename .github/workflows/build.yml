@@ -1,4 +1,5 @@
 name: Build pipa images
+runs-on: self-hosted
 on:
   push: # Build when push
   workflow_dispatch:
@@ -26,7 +27,7 @@ jobs:
 
       - name: Install pmbootstrap from git
         run: |
-          git clone --branch 3.10.2 --depth=1 https://gitlab.postmarketos.org/postmarketOS/pmbootstrap.git
+          git clone --branch 3.10.3 --depth=1 https://gitlab.postmarketos.org/postmarketOS/pmbootstrap.git
           mkdir -p ~/.local/bin
           ln -s "$PWD/pmbootstrap/pmbootstrap.py" ~/.local/bin/pmbootstrap
           pmbootstrap --version
