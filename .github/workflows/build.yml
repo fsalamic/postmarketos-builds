@@ -28,8 +28,10 @@ jobs:
         run: |
           git clone --branch 3.10.3 --depth=1 https://gitlab.postmarketos.org/postmarketOS/pmbootstrap.git
           mkdir -p ~/.local/bin
-          rm ~/.local/bin/pmbootstrap
+          rm -f ~/.local/bin/pmbootstrap
           ln -sf "$PWD/pmbootstrap/pmbootstrap.py" ~/.local/bin/pmbootstrap
+          chmod +x ~/.local/bin/pmbootstrap
+          export PATH="$HOME/.local/bin:$PATH"
           pmbootstrap --version
 
       - name: Set up pmaports
