@@ -31,11 +31,13 @@ jobs:
           rm -f ~/.local/bin/pmbootstrap
           ln -sf "$PWD/pmbootstrap/pmbootstrap.py" ~/.local/bin/pmbootstrap
           chmod +x ~/.local/bin/pmbootstrap
+          echo "PATH=$HOME/.local/bin:$PATH" >> $GITHUB_ENV
           export PATH="$HOME/.local/bin:$PATH"
           pmbootstrap --version
 
       - name: Set up pmaports
         run: |
+          export PATH="$HOME/.local/bin:$PATH"
           echo -e '\n\n' | pmbootstrap init || true
           cd ~/.local/var/pmbootstrap/cache_git/pmaports
           git remote
@@ -46,6 +48,7 @@ jobs:
 
       - name: Build the xiaomi-pipa without DE
         run: |
+           export PATH="$HOME/.local/bin:$PATH"
            cp xiaomi-pipa.cfg ~/.config/pmbootstrap_v3.cfg
            pmbootstrap install --password 147147
            pmbootstrap export
@@ -61,6 +64,7 @@ jobs:
 
       - name: Build the xiaomi-pipa with KDE Plasma Desktop
         run: |
+           export PATH="$HOME/.local/bin:$PATH"
            yes | pmbootstrap zap
            rm -r out/*
            pmbootstrap install --password 147147 --add postmarketos-ui-plasma-desktop
