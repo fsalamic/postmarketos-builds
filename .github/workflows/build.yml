@@ -1,4 +1,4 @@
-name: Build pipa images
+name: Build pipa images new
 runs-on: self-hosted
 on:
   push: # Build when push
