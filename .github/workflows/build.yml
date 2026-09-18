@@ -1,5 +1,5 @@
 name: Build pipa images new
-on:
+on: 
   push: # Build when push
   workflow_dispatch:
   schedule:
@@ -11,7 +11,7 @@ jobs:
       matrix:
         version: ["default"]
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Check out build configurations
         uses: actions/checkout@v4
